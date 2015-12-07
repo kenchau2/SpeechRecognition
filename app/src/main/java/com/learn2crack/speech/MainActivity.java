@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.Dialog;
@@ -74,15 +75,22 @@ ArrayList<String> matches_text;
     	     android.R.layout.simple_list_item_1, matches_text);
      textlist.setAdapter(adapter);
      textlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-     @Override
-     public void onItemClick(AdapterView<?> parent, View view,
-                             int position, long id) {
-    	 Speech.setText("You have said " +matches_text.get(position));
-    	 match_text_dialog.hide();
-     }
- });
+         @Override
+         public void onItemClick(AdapterView<?> parent, View view,
+                                 int position, long id) {
+             String command = matches_text.get(position);
+             Speech.setText("You have said " + command);
+             match_text_dialog.hide();
+             if(command.equals("打電話")){
+                 Intent intentDial = new Intent("android.intent.action.CALL", Uri.parse("tel:93494532"));
+                 startActivity(intentDial);
+             }
+         }
+     });
      match_text_dialog.show();
-     
+
+
+
      }
      super.onActivityResult(requestCode, resultCode, data);
     }
